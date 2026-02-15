@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>PMF - WiFi</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: white;
+}
+
+header {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin-top: 10px;
+    color: gray;
+}
+
+.container {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.embed {
+    background: #e5e5e5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.embed-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.code-box {
+    background: black;
+    color: white;
+    font-family: monospace;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s;
+}
+
+.code-box:hover {
+    background: #222;
+}
+
+.footer {
+    background: black;
+    color: gray;
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>PMF Wi-Fi passwords</h1>
+    <p>Free access list of private PMF Wi-Fi passwords</p>
+</header>
+
+<div class="container" id="container">
+</div>
+
+<div class="footer">
+    <div>Next time stop using WPA2-PSK</div>
+    <div>Made by PSP Team</div>
+</div>
+
+<script>
+fetch("data.json")
+.then(response => response.json())
+.then(data => {
+
+    const container = document.getElementById("container");
+
+    Object.keys(data).forEach(key => {
+
+        const embed = document.createElement("div");
+        embed.className = "embed";
+
+        const title = document.createElement("div");
+        title.className = "embed-title";
+        title.textContent = key + " :";
+
+        const codeBox = document.createElement("div");
+        codeBox.className = "code-box";
+        codeBox.textContent = data[key];
+
+        codeBox.addEventListener("click", () => {
+            navigator.clipboard.writeText(data[key]);
+            codeBox.textContent = "Copié !";
+            setTimeout(() => {
+                codeBox.textContent = data[key];
+            }, 1000);
+        });
+
+        embed.appendChild(title);
+        embed.appendChild(codeBox);
+        container.appendChild(embed);
+    });
+
+})
+.catch(error => {
+    console.error("Erreur chargement JSON:", error);
+});
+</script>
+
+</body>
+</html>
