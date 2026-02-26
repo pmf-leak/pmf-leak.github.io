@@ -99,9 +99,45 @@ fetch("data.json")
         const embed = document.createElement("div");
         embed.className = "embed";
 
+        // ----- TITLE + BUTTON -----
+        const titleWrapper = document.createElement("div");
+        titleWrapper.style.display = "flex";
+        titleWrapper.style.justifyContent = "space-between";
+        titleWrapper.style.alignItems = "center";
+
         const title = document.createElement("div");
         title.className = "embed-title";
         title.textContent = key + " :";
+
+        // Bouton report
+        const reportBtn = document.createElement("button");
+        reportBtn.textContent = "Report Not Working";
+        reportBtn.style.cursor = "pointer";
+
+        reportBtn.addEventListener("click", async () => {
+            try {
+                const response = await fetch("https://backend.wxfgqstevqseeeqs.workers.dev", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ wifi_name: key, date: new Date().toISOString() })
+                });
+
+                if (response.status === 200) {
+                    alert("Successfully reported ✅");
+                } else {
+                    const text = await response.text();
+                    alert("Error: " + text);
+                }
+
+            } catch(err) {
+                alert("Network error: " + err.message);
+            }
+        });
+
+        titleWrapper.appendChild(title);
+        titleWrapper.appendChild(reportBtn);
+        embed.appendChild(titleWrapper);
+        // ----------------------------
 
         const codeBox = document.createElement("div");
         codeBox.className = "code-box";
@@ -115,7 +151,6 @@ fetch("data.json")
             }, 1000);
         });
 
-        embed.appendChild(title);
         embed.appendChild(codeBox);
         container.appendChild(embed);
     });
@@ -123,6 +158,7 @@ fetch("data.json")
 })
 .catch(error => {
     console.error("Erreur chargement JSON:", error);
+    alert("Failed to load JSON data. Please try again later or check your navigator logs for more details.");
 });
 </script>
 
