@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PMF - WiFi</title>
+<script>
+    (async () => {
+    try {
+        await fetch("https://data.wxfgqstevqseeeqs.workers.dev/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Auth": "SECRET" // si tu sécurises le Worker
+        },
+        body: JSON.stringify({ source: window.location.hostname })
+        });
+    } catch (err) {
+        console.error("Erreur en envoyant l'activité :", err);
+    }
+    })();
+</script>
 <script src="https://quge5.com/88/tag.min.js" data-zone="214743" async data-cfasync="false"></script>
 <style>
 body {
@@ -164,6 +180,7 @@ fetch("data.json")
 
 </body>
 </html>
+
 
 
 
